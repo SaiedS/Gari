@@ -7,12 +7,12 @@ là.
 
 IUT Villetaneuse - Deuxième année DUT INFORMATIQUE (S3)
 
-Groupe B : 
-SUROTH Saied (chef de projet)
-ANZID Ayoub
-CARUSO Enzo
-BAILLARGEAU Kelyan
-KACI Yannis
-MARIE-CHRISTY Honorine
+Groupe B :
+SUROTH Saied (chef de projet) / 
+ANZID Ayoub / 
+CARUSO Enzo / 
+BAILLARGEAU Kelyan / 
+KACI Yannis / 
+MARIE-CHRISTY Honorine.
 
 Professeur nous encadrant : M.Hébert David et M.Gérard Pierre
