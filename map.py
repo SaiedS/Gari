@@ -7,8 +7,11 @@ from mysql.connector import connection
 import os #si jamais ya un probleme avec BaseMap aller dans le chemin generalement dans programData: Anaconda3/Lib/site-packages/mpl_toolkits/basemap ensuite cree un dossier data puis mettre "epsg" dans ce dossier (sur discord)
 #os.environ['PROJ_LIB'] = 'C:\\ProgramData\\Anaconda3\\Lib\\site-packages\\mpl_toolkits\\basemap\\data'
 
+import pandas as pd
+import numpy as np
 import folium
 from folium import plugins #pour utiliser des librairies GJSON de folium (l'animation)
+from folium.plugins import FloatImage
 from datetime import datetime
 import time
 
@@ -76,15 +79,41 @@ try:
         print("Vous êtes connecté à la base de données :", record)
         cursor.execute("SELECT * FROM trouver")
         rows = cursor.fetchall()
-       
+	
+        
+        
+        """fichier = open("test.csv","w") #récuperer les données de la bdd et les mettres dans un fichier .csv (si jamais on arrive pas a utiliser les donnees a partir d'une bdd alors on met les donnees de la bdd dans un fichier, c'est plus facile a manier enfin mon avis)
+        fichier.write("id;lat_dep;lng_dep;adresse_dep;lat_arr;lng_arr;adresse_arr;date_heur;id_user;etat\n")
+        for row in rows:
+            fichier.write(str(row[0])+";")
+            fichier.write(str(row[1])+";")
+            fichier.write(str(row[2])+";")
+            fichier.write(str(row[3])+";")
+            fichier.write(str(row[4])+";")
+            fichier.write(str(row[5])+";")
+            fichier.write(str(row[6])+";")
+            fichier.write(str(row[7])+";")
+            fichier.write(str(row[8])+";")
+            fichier.write(str(row[9])+"\n")"""
             #Affichage de la table trouver
             #print("L'id de la personne : {0},\nPlace départ -> coordonnée départ: [{1};{2}]-> {3}.\nPlace trouvée -> coordonnée arrivée: [{4};{5}]-> {6} à {7}\n".format(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]))
+            
+        """fichier.close()#fermer le fichier sinon le reste du coup ne fonctionnera pas       
+        #lire le ficher .csv et mettre dans la variable df
+        df = pd.read_csv("test.csv", sep=';', encoding='latin-1')
+        #Voir ce que contient df
+        #print(df)"""
         
         # Map de paris, #location centre de Paris, #tiles format de la map, # zoom_control rajoute des boutons pour zoom
-        m = folium.Map(location=[48.860419, 2.345341], tiles="cartodbpositron", zoom_start=12, width=900, height=600, zoom_control=True)
+        m = folium.Map(location=[48.860419, 2.345341], tiles="cartodbpositron", zoom_start=12, width=1400, height=800,zoom_control=True)	
+        url=('https://raw.githubusercontent.com/SECOORA/static_assets/master/maps/img/rose.png')
+        FloatImage(url, bottom=5, left=80).add_to(m)    
         
         dep = coord_dep() #recupere les coordonnées de depart
         #print(dep)
+
+		
+		
         arr = coord_arr() #recupere les coordonnées d'arrivée
         #print(arr)
         date = date() #recupere les dates enregistrer pour chaque place trouver
@@ -94,13 +123,11 @@ try:
         data = {}
         data["coordonnee"] = coord_depEtArr #on charge le dictionnaire des coordonnees de dep
         data["date"] = date #pareille on mettant les dates 
-        data["couleur"] = 'red' # la je met une couleur par defaut
+        data["couleur"] = 'red' # la je met uen couleur par defaut
         #print(data)
         lines = [0] #initialise un tab
         lines[0] = data #on met le dict dans le tab
         #print(lines[0])
-        boole = False
-        changeCoul = 'red'
         features = [
         {
             'type': 'Feature',
@@ -113,34 +140,17 @@ try:
                 'style': {
                     'color': line['couleur'], #ligne couleur rouge par defaut
                     'weight': line['taille'] if 'taille' in line else 5 #ici j'ai pas mis de clé 'taille' du coup par defaut le trait sera de taille 5
-                },
-                'icon': 'circle',
-                'iconstyle': {
-                    'fillColor': changeCoul,
-                    'fillOpacity': 0.6,
-                    'stroke': 'false',
-                    'radius': 13
                 }
             }
         }
         for line in lines #on parcourt le tableau Lines pour tracer chaque trait selon les parametres juste en dessus
         ]
 
-        plugins.TimestampedGeoJson(
-        {
+        plugins.TimestampedGeoJson({
             'type': 'FeatureCollection',
-            'features': features
-        }, 
-        period='PT1H',
-        add_last_point=True,
-        auto_play=True,
-        loop=True,
-        max_speed=20,
-        loop_button=True,
-        date_options='DD/MM/YYYY : HH:mm:ss',
-        time_slider_drag_update=True,
-        duration='P2M').add_to(m) #ici on met par defaut l'actualisation par jours(P1D pour mettre en heure : PT1H) et on actualise aussie le point dans la map
-
+            'features': features,
+        }, period='P1D', add_last_point=True).add_to(m) #ici on met par defaut l'actualisation par jours(P1D pour mettre en heure : PT1H) et on actualise aussie le point dans la map
+	
         m.save('testMapAnimation.html') # on enregistre la map dans un html.
 
 except Error as e:
