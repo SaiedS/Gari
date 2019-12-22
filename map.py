@@ -5,14 +5,12 @@ from mysql.connector import connection
 
 
 import os #si jamais ya un probleme avec BaseMap aller dans le chemin generalement dans programData: Anaconda3/Lib/site-packages/mpl_toolkits/basemap ensuite cree un dossier data puis mettre "epsg" dans ce dossier (sur discord)
-os.environ['PROJ_LIB'] = 'C:\\ProgramData\\Anaconda3\\Lib\\site-packages\\mpl_toolkits\\basemap\\data'
+#os.environ['PROJ_LIB'] = 'C:\\ProgramData\\Anaconda3\\Lib\\site-packages\\mpl_toolkits\\basemap\\data'
 
-import matplotlib.animation as animation
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import folium
-from folium import plugins
+from folium import plugins #pour utiliser des librairies GJSON de folium (l'animation)
 from datetime import datetime
 import time
 
@@ -58,6 +56,16 @@ def date(): # recupere la date ou la personne à trouver sa place
     for row in rows:
         date.append(str("{0}".format(row[0])))
     return date
+
+def coord_depEtArr(tabDep, tabArr): # rassemblement coordonnee dep et arr
+    tab = []
+    i = 0
+    taille = len(tabDep)
+    while(i<taille):
+        tab.append(tabDep[i])
+        tab.append(tabArr[i])
+        i+=1
+    return tab        
     
 try:
     connection = mysql.connector.connect(host="localhost",user="root",password="123456789", database="gari")
@@ -93,33 +101,49 @@ try:
         #Voir ce que contient df
         #print(df)"""
         
+        # Map de paris, #location centre de Paris, #tiles format de la map, # zoom_control rajoute des boutons pour zoom
+        m = folium.Map(location=[48.860419, 2.345341], tiles="cartodbpositron", zoom_start=12, width=900, height=600, zoom_control=True)
+        
         dep = coord_dep() #recupere les coordonnées de depart
         #print(dep)
         arr = coord_arr() #recupere les coordonnées d'arrivée
         #print(arr)
         date = date() #recupere les dates enregistrer pour chaque place trouver
         #print(date)
-        i=0
-        tailleN = len(dep)
-        
-        """# on met les coordonnées de depart (pour test)
-        points = (df.lat_dep.fillna(0),df.lng_dep.fillna(0))
-        #print(points)
-        coordinates =[]
-        # On met les coordonnées de dep
-        lat = points[0]
-        long = points[1]"""
-        
-        # Map de paris, #location centre de Paris, #tiles format de la map, # zoom_control rajoute des boutons pour zoom
-        m = folium.Map(location=[48.860419, 2.345341], tiles="cartodbpositron", zoom_start=12, width=900, height=600, zoom_control=True)
-        """# lat_dep et lng_dep de la bdd test pour faire des points
-        for la,lo in zip(lat,long):
-            coordinates.append([la,lo])
-        
-        #print(coordinates)
-        m.add_child(plugins.FastMarkerCluster(coordinates[0:40000])) #ici pour que les points qu'on a ajouté soit en forme de marqueur
-        m # affiche la map que sur jupyter par sur console"""
-        m.save('index.html') #du coup je save en html et j'ouvre l'html
+        coord_depEtArr = coord_depEtArr(dep,arr)#met dans un tab coordonnee de depart et arrive ensemble
+        #print(coord_depEtArr)
+        data = {}
+        data["coordonnee"] = coord_depEtArr #on charge le dictionnaire des coordonnees de dep
+        data["date"] = date #pareille on mettant les dates 
+        data["couleur"] = 'red' # la je met uen couleur par defaut
+        #print(data)
+        lines = [0] #initialise un tab
+        lines[0] = data #on met le dict dans le tab
+        #print(lines[0])
+        features = [
+        {
+            'type': 'Feature',
+            'geometry': { # pour tracer la ligne
+                'type': 'LineString',
+                'coordinates': line['coordonnee'], #trace la ligne par rapport au coordonnee de dep et arr
+            },
+            'properties': {
+                'times': line['date'], # barre en bas de la map pour le temps
+                'style': {
+                    'color': line['couleur'], #ligne couleur rouge par defaut
+                    'weight': line['taille'] if 'taille' in line else 5 #ici j'ai pas mis de clé 'taille' du coup par defaut le trait sera de taille 5
+                }
+            }
+        }
+        for line in lines #on parcourt le tableau Lines pour tracer chaque trait selon les parametres juste en dessus
+        ]
+
+        plugins.TimestampedGeoJson({
+            'type': 'FeatureCollection',
+            'features': features,
+        }, period='P1D', add_last_point=True).add_to(m) #ici on met par defaut l'actualisation par jours(P1D pour mettre en heure : PT1H) et on actualise aussie le point dans la map
+
+        m.save('testMapAnimation.html') # on enregistre la map dans un html.
 
 except Error as e:
     print("Probleme de connexion à la base de données.", e)
