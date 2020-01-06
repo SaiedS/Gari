@@ -87,11 +87,11 @@ INSERT INTO `voitures` (`id`, `marque`, `modele`, `couleur`, `matricule`, `type`
 (4, 'Renault', 'clio', 'Indigo', 'FF-877-JK', 'Citadine', '',104, 1),
 (5, 'Mercedes-Benz', 'Classe C', 'Orange foncé', 'GU-912-CD', 'Berline et 4x4', '', 105, 1),
 (6, 'Volkswagen', 'golf 7', 'Gris', 'NS-154-AH', 'Berline et 4x4', '', 106, 1),
-(7, 'Toyota', 'GT86', 'Rouge', 'TY-860-AT', 'Coupé', '', 107, 1);
-(8, 'Opel', 'Corsa', 'Rouge', 'GG-CG-980', 'Citadine', '', 108, 1);
-(9, 'Seat', 'Leon', 'Vert', 'GG-AO-410', 'Citadine', '', 109, 1);
-(10, 'Citroen', 'C4', 'Jaune', 'EP-526-ME', 'Citadine', '', 110, 1);
-(11, 'Peugeot', '206', 'GRIS', 'BA-100-PD', 'Citadine', '', 103, 1),
+(7, 'Toyota', 'GT86', 'Rouge', 'TY-860-AT', 'Coupé', '', 107, 1),
+(8, 'Opel', 'Corsa', 'Rouge', 'GG-CG-980', 'Citadine', '', 108, 1),
+(9, 'Seat', 'Leon', 'Vert', 'GG-AO-410', 'Citadine', '', 109, 1),
+(10, 'Citroen', 'C4', 'Jaune', 'EP-526-ME', 'Citadine', '', 110, 1),
+(11, 'Peugeot', '206', 'GRIS', 'BA-100-PD', 'Citadine', '', 103, 1);
 
 
 ALTER TABLE `trouver`
