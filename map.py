@@ -236,7 +236,7 @@ try:
 
         plugins.TimestampedGeoJson({
             'type': 'FeatureCollection',
-            'features': features,
+            'features': 'features',
         }, period='P1D', add_last_point=True).add_to(m) #ici on met par defaut l'actualisation par jours(P1D pour mettre en heure : PT1H) et on actualise aussie le point dans la map
 
         m.save('testMapAnimation.html') # on enregistre la map dans un html.
