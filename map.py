@@ -234,10 +234,10 @@ try:
     #    for line in lines #on parcourt le tableau Lines pour tracer chaque trait selon les parametres juste en dessus
     #    ]
 
-        plugins.TimestampedGeoJson({
-            'type': 'FeatureCollection',
-            'features': features,
-        }, period='P1D', add_last_point=True).add_to(m) #ici on met par defaut l'actualisation par jours(P1D pour mettre en heure : PT1H) et on actualise aussie le point dans la map
+    #    plugins.TimestampedGeoJson({
+    #        'type': 'FeatureCollection',
+    #        'features': features,
+    #    }, period='P1D', add_last_point=True).add_to(m) #ici on met par defaut l'actualisation par jours(P1D pour mettre en heure : PT1H) et on actualise aussie le point dans la map
 
         m.save('testMapAnimation.html') # on enregistre la map dans un html.
 
