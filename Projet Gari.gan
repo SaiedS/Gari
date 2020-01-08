@@ -73,8 +73,8 @@
             <depend id="25" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="25" name="Implémentation code 4 points cardinaux Map" meeting="false" start="2019-12-25" duration="1" complete="0" expand="true"/>
-        <task id="26" name="Implémentation code caractéristique voiture" meeting="false" start="2019-12-08" duration="1" complete="0" expand="true"/>
-        <task id="27" name="Tests méthodes implémentées" meeting="false" start="2019-12-22" duration="1" complete="0" expand="true"/>
+        <task id="26" name="Implémentation code caractéristique voiture" meeting="false" start="2019-12-08" duration="29" complete="0" expand="true"/>
+        <task id="27" name="Tests méthodes implémentées" meeting="false" start="2019-12-22" duration="20" complete="0" expand="true"/>
         <task id="31" name="Création du diagramme de PERT" meeting="false" start="2019-10-31" duration="65" complete="0" expand="true"/>
         <task id="32" name="Création du diagramme de GANTT" meeting="false" start="2019-10-31" duration="65" complete="0" expand="true"/>
         <task id="28" name="Rédaction de la synthèse finale" meeting="false" start="2019-12-28" duration="14" complete="0" expand="true"/>
