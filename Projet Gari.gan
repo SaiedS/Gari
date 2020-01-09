@@ -52,6 +52,7 @@
             <depend id="19" type="2" difference="0" hardness="Strong"/>
             <depend id="20" type="2" difference="0" hardness="Strong"/>
             <depend id="29" type="2" difference="0" hardness="Strong"/>
+            <depend id="33" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="14" name="Tests avec Plotly" meeting="false" start="2019-12-10" duration="6" complete="0" expand="true">
             <depend id="27" type="2" difference="0" hardness="Strong"/>
@@ -66,6 +67,7 @@
             <depend id="23" type="2" difference="0" hardness="Strong"/>
             <depend id="27" type="2" difference="0" hardness="Strong"/>
         </task>
+        <task id="33" name="Tests avec Panda" meeting="false" start="2019-12-10" duration="6" complete="0" expand="true"/>
         <task id="21" name="Implémentation base de données test" meeting="false" start="2019-12-01" duration="7" complete="0" expand="true">
             <depend id="26" type="2" difference="0" hardness="Strong"/>
         </task>
