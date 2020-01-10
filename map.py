@@ -228,38 +228,35 @@ try:
             folium.PolyLine(points_a, color="blue", weight=2.5, opacity=1,).add_to(match)
             i = i + 2
         
-        folium.LayerControl(collapsed=False).add_to(m)
+        folium.LayerControl(collapsed=False).add_to(m) #rajout des boutons 
         
-
+        plugins.LocateControl().add_to(m) #facultative juste pour connaitre sa position.
 
         #points_a = [[48.848067, 2.301280], [48.877505, 2.343289]]
         #folium.PolyLine(points_a, color="blue", weight=2.5, opacity=1).add_to(m)
 
-    #features = [
-    #    {
-    #        'type': 'Feature',
-    #        'geometry': { # pour tracer la ligne
-    #            'type': 'LineString',
-    #            'coordinates': line['coordonnee'], #trace la ligne par rapport au coordonnee de dep et arr
-    #        },
-    #        'properties': {
-    #            'times': line['date'], # barre en bas de la map pour le temps
-    #            'style': {
-    #                'color': line['couleur'], #ligne couleur rouge par defaut
-    #                'weight': line['taille'] if 'taille' in line else 5 #ici j'ai pas mis de clé 'taille' du coup par defaut le trait sera de taille 5
-    #            }
-    #        }
-    #    }
+        """features = [ #pour l'animation
+        {
+        'type': 'Feature',
+        'geometry': {
+            'type': 'LineString',
+            'coordinates': line['coordonnee'],
+        },
+        'properties': {
+            'times': line['date'],
+            'style': {
+                'color': line['color'] if 'color' in line else 'red',
+                'weight': line['weight'] if 'weight' in line else 5
+            }
+        }
+        }
+        for line in lines
+        ]
 
-    #    for line in lines #on parcourt le tableau Lines pour tracer chaque trait selon les parametres juste en dessus
-    #    ]
-
-    #    plugins.TimestampedGeoJson({
-    #        'type': 'FeatureCollection',
-    #        'features': features,
-    #    }, period='P1D', add_last_point=True).add_to(m) #ici on met par defaut l'actualisation par jours(P1D pour mettre en heure : PT1H) et on actualise aussie le point dans la map
-
-        
+        plugins.TimestampedGeoJson({
+            'type': 'FeatureCollection',
+            'features': features,
+        }, period='P1D', add_last_point=True).add_to(m)"""
         
         m.save('testMapAnimation.html') # on enregistre la map dans un html.
 
