@@ -160,7 +160,7 @@ try:
         FloatImage(url, bottom=5, left=80).add_to(m)
 
         dep = coord_dep() #recupere les coordonnées de depart
-        print(dep)
+        #print(dep)
 
 
         match = tabMatch()
@@ -173,7 +173,7 @@ try:
         cara = cara()
         #print(cara)
         coord_depEtArr = coord_depEtArr(dep,arr)#met dans un tab coordonnee de depart et arrive ensemble
-        print(coord_depEtArr)
+        #print(coord_depEtArr)
         data = {}
         data["coordonnee"] = coord_depEtArr #on charge le dictionnaire des coordonnees de dep
         data["date"] = date #pareille on mettant les dates
@@ -183,19 +183,37 @@ try:
         lines = [0] #initialise un tab
         lines[0] = data #on met le dict dans le tab
         #print(lines[0])
+        
+        plugins.Fullscreen( #un bouton pour mettre en plein écran
+        position='topright',
+        title='Agrandir',
+        title_cancel='Quitter le mode pleine écran',
+        force_separate_button=True).add_to(m)
+        
+        groupe = folium.FeatureGroup(name='Pour tout enlever') #Un bouton pour enlever tout
+        m.add_child(groupe) #ajout a la map
 
+        garitoo = plugins.FeatureGroupSubGroup(groupe, 'Garitoo') #un bouton pour afficher les garitoos
+        m.add_child(garitoo) #ajout a la map
+        
+        garini = plugins.FeatureGroupSubGroup(groupe, 'Garini') #un bouton pour afficher les garinis
+        m.add_child(garini) #ajout a la map
+        
+        match = plugins.FeatureGroupSubGroup(groupe, 'Match') #un bouton pour afficher les matchs
+        m.add_child(match) #ajout a la map
+        
         i = 0
         nb = i
         nb2 = i
         while i < len(data["coordonnee"]):
 
             if i%2==0:
-                folium.Marker(location=data["coordonnee"][i],popup= caraStr(cara[nb]),icon=folium.map.Icon(color='red',icon='')).add_to(m)
+                folium.Marker(location=data["coordonnee"][i],popup= caraStr(cara[nb]),icon=folium.map.Icon(color='red',icon='')).add_to(garini)
                 #a = data["deplacement"][i]
 
                 nb = nb + 1
             else:
-                folium.Marker(location=data["coordonnee"][i],popup= caraStr(cara[nb2]),icon=folium.map.Icon(color='green',icon='')).add_to(m)
+                folium.Marker(location=data["coordonnee"][i],popup= caraStr(cara[nb2]),icon=folium.map.Icon(color='green',icon='')).add_to(garitoo)
                 #b = data["coordonnee"][i]
 
                 #points_a = [[48.848067, 2.301280], [48.877505, 2.343289]]
@@ -207,9 +225,11 @@ try:
         i = 0
         while i < len(data["match"])-1:
             points_a = [data["match"][i], data["match"][i+1]]
-            folium.PolyLine(points_a, color="blue", weight=2.5, opacity=1,).add_to(m)
+            folium.PolyLine(points_a, color="blue", weight=2.5, opacity=1,).add_to(match)
             i = i + 2
-
+        
+        folium.LayerControl(collapsed=False).add_to(m)
+        
 
 
         #points_a = [[48.848067, 2.301280], [48.877505, 2.343289]]
@@ -239,6 +259,8 @@ try:
     #        'features': features,
     #    }, period='P1D', add_last_point=True).add_to(m) #ici on met par defaut l'actualisation par jours(P1D pour mettre en heure : PT1H) et on actualise aussie le point dans la map
 
+        
+        
         m.save('testMapAnimation.html') # on enregistre la map dans un html.
 
 except Error as e:
