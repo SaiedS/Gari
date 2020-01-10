@@ -157,7 +157,7 @@ try:
         # Map de paris, #location centre de Paris, #tiles format de la map, # zoom_control rajoute des boutons pour zoom
         m = folium.Map(location=[48.860419, 2.345341], tiles="cartodbpositron", zoom_start=12, width=1400, height=800,zoom_control=True)
         url=('https://raw.githubusercontent.com/SECOORA/static_assets/master/maps/img/rose.png')
-        FloatImage(url, bottom=5, left=80).add_to(m)
+        FloatImage(url, bottom=5, left=79).add_to(m)
 
         dep = coord_dep() #recupere les coordonnées de depart
         #print(dep)
